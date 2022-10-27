@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
+
 
 class Login extends Component {
 
     constructor(props) {
         super(props);
-        
+
         this.state = {
             email: '',
             password: ''
         }
     }
 
-    submitHandler =async (event) => {
+    submitHandler = async (event) => {
 
         event.preventDefault()
-        const {email, password} = this.state
+        const { email, password } = this.state
 
         let user = {
             email,
@@ -32,11 +35,11 @@ class Login extends Component {
 
         let parsedRes = await res.json()
 
-        if(parsedRes.message === 'Customer successfully Added!'){
+        if (parsedRes.message === 'Customer successfully Added!') {
             this.props.loginHandler(parsedRes.user)
 
-            if(window){
-                document.cookie = 'token' + "=" + (parsedRes.token || "")  + 'expires' + "; path=/";
+            if (window) {
+                document.cookie = 'token' + "=" + (parsedRes.token || "");
             }
 
         }
@@ -46,31 +49,52 @@ class Login extends Component {
 
     emailHandler = (event) => {
 
-        this.setState({email: event.target.value})
+        this.setState({ email: event.target.value })
 
     }
 
     passwordHandler = (event) => {
 
-        this.setState({password: event.target.value})
+        this.setState({ password: event.target.value })
 
     }
-    
+
+
+
+    componentDidUpdate = () => {
+
+
+        toast(" User input Added! ", {
+            type: "error"
+        })
+        console.log("Update called!")
+
+
+    }
+
+    componentWillUnmount = () => {
+
+        console.log("Component unmount!")
+
+    }
+
 
     render() {
         return (
             <div>
 
+                
+
                 <form onSubmit={this.submitHandler} >
 
-                    <input value={this.state.email} type='email'  onChange={this.emailHandler} />
-                    <input value={this.state.password} type='password'  onChange={this.passwordHandler} />
+                    <input value={this.state.email} type='email' onChange={this.emailHandler} />
+                    <input value={this.state.password} type='password' onChange={this.passwordHandler} />
 
                     <button type='submit' > Submit </button>
 
 
                 </form>
-                
+
             </div>
         );
     }

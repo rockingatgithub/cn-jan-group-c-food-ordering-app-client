@@ -1,6 +1,10 @@
+import Cookies from 'js-cookie';
 import React, { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Login from './Login';
 import Profile from './Profile';
+
 
 
 class App extends Component {
@@ -19,7 +23,36 @@ class App extends Component {
       user: user
     })
   }
-  
+
+
+  componentDidMount = async () => {
+
+    const userToken = Cookies.get('token')
+
+    if (userToken) {
+
+      let res = await fetch(`http://localhost:8000/customer/createSession`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get('token')}`
+        }
+      })
+
+      let parsedRes = await res.json()
+
+      this.loginHandler(parsedRes.user)
+
+    }
+
+  }
+
+  componentDidUpdate = () => {
+
+
+
+  }
+
 
   render() {
 
@@ -27,17 +60,32 @@ class App extends Component {
 
     return (
       <div>
-      
-      <h1>Food Ordering App</h1>
 
-      {this.state.isLoggedIn ? <Profile user={this.state.user}  />   : 
-      <>
-        <Login type='signup' loginHandler={this.loginHandler} />
-        <Login type='signin' loginHandler={this.loginHandler} />
-      </>
-      }
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        {/* Same as */}
+        <ToastContainer />
 
-    </div>
+        <h1>Food Ordering App</h1>
+
+        {this.state.isLoggedIn ? <Profile user={this.state.user} /> :
+          <>
+            <Login type='signup' loginHandler={this.loginHandler} />
+            <Login type='signin' loginHandler={this.loginHandler} />
+          </>
+        }
+
+      </div>
     );
   }
 }
