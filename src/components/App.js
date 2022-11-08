@@ -1,7 +1,9 @@
 import Cookies from 'js-cookie';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setCounter } from '../actions';
 import ChatApp from './ChatApp';
 import Login from './Login';
 import Profile from './Profile';
@@ -27,6 +29,8 @@ class App extends Component {
 
 
   componentDidMount = async () => {
+
+    this.props.dispatch(setCounter(34))
 
     const userToken = Cookies.get('token')
 
@@ -58,6 +62,8 @@ class App extends Component {
   render() {
 
     console.log("is logged in", this.state.isLoggedIn)
+    console.log("The store data", this.props.main)
+
 
     return (
       <div>
@@ -93,4 +99,11 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+   return {
+     main: state
+   }
+}
+
+export default  connect(mapStateToProps)(App) ;
+
