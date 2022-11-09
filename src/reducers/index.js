@@ -11,8 +11,8 @@ function appreducer( state = initialState, action ) {
         case 'LOGIN':
             
             return { ...initialState, isLoggedIn: true  }
-        case 'INC' : {
-            return {...initialState, counter: action.data }
+        case 'SETUSER' : {
+            return {...initialState, ...action.data }
         }
     
         default:

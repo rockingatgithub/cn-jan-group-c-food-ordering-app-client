@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { login } from '../actions';
+import { connect } from 'react-redux';
 
 
 class Login extends Component {
@@ -10,47 +12,29 @@ class Login extends Component {
 
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            name: ''
         }
     }
 
     submitHandler = async (event) => {
 
         event.preventDefault()
-        const { email, password } = this.state
-
+        const { email, password, name } = this.state
+        const { userType, type } = this.props
+        const typeUser = userType === 'client' ? 'client' : 'customer'
         let user = {
             email,
-            password
+            password,
         }
-
-        let res = await fetch(`http://localhost:8000/customer/${this.props.type}`, {
-            method: 'POST',
-            body: JSON.stringify(user),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-
-        let parsedRes = await res.json()
-
-        if (parsedRes.message === 'Customer successfully Added!') {
-            this.props.loginHandler(parsedRes.user)
-
-            if (window) {
-                document.cookie = 'token' + "=" + (parsedRes.token || "");
-            }
-
+        if (typeUser === 'client') {
+            user.name = name
         }
-
-
+        this.props.dispatch(login(user, typeUser, type))
     }
 
     emailHandler = (event) => {
-
         this.setState({ email: event.target.value })
-
     }
 
     passwordHandler = (event) => {
@@ -59,36 +43,23 @@ class Login extends Component {
 
     }
 
+    nameHandler = (event) => {
 
-
-    componentDidUpdate = () => {
-
-
-        toast(" User input Added! ", {
-            type: "error"
-        })
-        console.log("Update called!")
-
+        this.setState({ name: event.target.value })
 
     }
-
-    componentWillUnmount = () => {
-
-        console.log("Component unmount!")
-
-    }
-
 
     render() {
         return (
             <div>
 
-                
-
                 <form onSubmit={this.submitHandler} >
 
-                    <input value={this.state.email} type='email' onChange={this.emailHandler} />
-                    <input value={this.state.password} type='password' onChange={this.passwordHandler} />
+                    {this.props.userType === 'client' && <><label htmlFor='name'> Name:- </label> <input id='name' value={this.state.name} type='text' onChange={this.nameHandler} /></>}
+                    <label htmlFor='email'  > Email:- </label>
+                    <input id="email" value={this.state.email} type='email' onChange={this.emailHandler} />
+                    <label htmlFor='password'  > Email:- </label>
+                    <input id="password" value={this.state.password} type='password' onChange={this.passwordHandler} />
 
                     <button type='submit' > Submit </button>
 
@@ -100,4 +71,12 @@ class Login extends Component {
     }
 }
 
-export default Login;
+
+
+const mapStateToProps = (state) => {
+    return {
+      main: state
+    }
+ }
+ 
+ export default  connect(mapStateToProps)(Login) ;

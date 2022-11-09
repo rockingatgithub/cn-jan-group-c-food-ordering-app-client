@@ -16,7 +16,8 @@ class App extends Component {
     super(props);
     this.state = {
       isLoggedIn: false,
-      user: {}
+      user: {},
+      userType: 'customer'
     }
   }
 
@@ -29,8 +30,6 @@ class App extends Component {
 
 
   componentDidMount = async () => {
-
-    this.props.dispatch(setCounter(34))
 
     const userToken = Cookies.get('token')
 
@@ -52,11 +51,13 @@ class App extends Component {
 
   }
 
-  componentDidUpdate = () => {
+ userTypeHandler = (event) => {
 
+  this.setState({
+    userType: event.target.value
+  })
 
-
-  }
+ }
 
 
   render() {
@@ -85,10 +86,15 @@ class App extends Component {
 
         <h1>Food Ordering App</h1>
 
-        {this.state.isLoggedIn ? <Profile user={this.state.user} /> :
+        { this.props.main.isLoggedIn  ? <Profile user={this.props.main.user} /> :
           <>
-            <Login type='signup' loginHandler={this.loginHandler} />
-            <Login type='signin' loginHandler={this.loginHandler} />
+            <div> 
+              Login Type:-  
+              Customer: <input type="radio" name="user-type" value='customer' onChange={this.userTypeHandler}  />
+              Client: <input type="radio" name="user-type" value='client' onChange={this.userTypeHandler}  />
+            </div>
+            Signup:-<Login type='signup'  userType={this.state.userType}  />
+            Signin:- <Login type='signin' userType={this.state.userType}  />
           </>
         }
 
