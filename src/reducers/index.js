@@ -14,6 +14,9 @@ function appreducer( state = initialState, action ) {
         case 'SETUSER' : {
             return {...initialState, ...action.data }
         }
+        case 'SETFOOD' : {
+            return {...initialState, isLoggedIn: true, ...action.data }
+        }
     
         default:
            return {...initialState}

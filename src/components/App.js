@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { setCounter } from '../actions';
+import { fetchUserProfile, setCounter, setUser } from '../actions';
 import ChatApp from './ChatApp';
 import Login from './Login';
 import Profile from './Profile';
@@ -15,49 +15,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false,
-      user: {},
       userType: 'customer'
     }
   }
 
-  loginHandler = (user) => {
-    this.setState({
-      isLoggedIn: true,
-      user: user
-    })
-  }
-
-
   componentDidMount = async () => {
-
-    const userToken = Cookies.get('token')
-
-    if (userToken) {
-
-      let res = await fetch(`http://localhost:8000/customer/createSession`, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${Cookies.get('token')}`
-        }
-      })
-
-      let parsedRes = await res.json()
-
-      this.loginHandler(parsedRes.user)
-
+      this.props.dispatch(fetchUserProfile())
     }
 
+  userTypeHandler = (event) => {
+    this.setState({
+      userType: event.target.value
+    })
   }
-
- userTypeHandler = (event) => {
-
-  this.setState({
-    userType: event.target.value
-  })
-
- }
 
 
   render() {

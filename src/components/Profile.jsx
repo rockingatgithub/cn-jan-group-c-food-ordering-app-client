@@ -1,4 +1,5 @@
 import React from 'react';
+import AddFood from './AddFood';
 import Chat from './Chat';
 
 function Profile(props) {
@@ -8,7 +9,10 @@ function Profile(props) {
 
             Email:- {props.user.email}
 
-            <Chat/>
+            {/* <Chat/> */}
+
+            <h1> Add Food  </h1>
+            <AddFood/>
             
         </div>
     );
