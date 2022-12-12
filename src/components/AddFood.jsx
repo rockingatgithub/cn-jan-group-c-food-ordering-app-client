@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addFood } from '../actions';
+import { ThemeContext } from './App';
+
 
 class AddFood extends Component {
 
@@ -49,6 +51,8 @@ class AddFood extends Component {
 
 
                 </form>
+
+                <ThemeContext.Consumer>{ value => (<div>The context value! {value}</div>) }</ThemeContext.Consumer>
 
             </div>
         );

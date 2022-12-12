@@ -15,6 +15,17 @@ class Login extends Component {
             password: '',
             name: ''
         }
+        this.setIntervalId = ''
+    }
+
+    componentDidMount = () => {
+       this.setIntervalId = setInterval(() => {
+            console.log('started at mount')
+          }, 1000);
+    }
+
+    componentWillUnmount = () => {
+        clearInterval(this.setIntervalId)
     }
 
     submitHandler = async (event) => {
