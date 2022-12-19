@@ -24,6 +24,10 @@ class Login extends Component {
           }, 1000);
     }
 
+    componentDidUpdate = () => {
+        console.log("component updated")
+    }
+
     componentWillUnmount = () => {
         clearInterval(this.setIntervalId)
     }

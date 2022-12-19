@@ -37,6 +37,8 @@ class App extends Component {
     })
   }
 
+  list = ['Prakash', "Vikas", "Himanshu", "Sudhendra"]
+
 
   render() {
 
@@ -77,7 +79,7 @@ class App extends Component {
 
         <ChatApp/>
         <Hooks/>
-
+        
       </div>
     );
   }

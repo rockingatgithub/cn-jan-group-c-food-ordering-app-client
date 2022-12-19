@@ -8,26 +8,8 @@ function Hooks(props) {
     const [ password, setPassword ] = useState('')
 
     useEffect(() => {
-
-        console.log("Componnet mount!")
-
+        console.log("the counter value has been updated")
     }, [])
-
-    useEffect(() => {
-
-        console.log("State name chnaged!")
-
-    }, [name])
-
-    useEffect(() => {
-
-        return () => {
-            console.log("Component unmounted!")
-            clearInterval()
-        }
-
-    })
-
 
     return (
         <div>
