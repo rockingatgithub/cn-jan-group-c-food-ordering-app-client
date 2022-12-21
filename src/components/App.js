@@ -5,11 +5,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchUserProfile, setCounter, setUser } from '../actions';
 import ChatApp from './ChatApp';
+import Firestore from './Firestore';
 import Hooks from './Hooks';
 import Login from './Login';
 import Profile from './Profile';
 
+
 export const ThemeContext = React.createContext("light")
+
 
 class App extends Component {
 
@@ -19,7 +22,6 @@ class App extends Component {
       userType: 'customer',
       counter: 0,
     }
-
     this.myref = React.createRef()
   }
 
@@ -79,7 +81,7 @@ class App extends Component {
 
         <ChatApp/>
         <Hooks/>
-        
+        <Firestore/>
       </div>
     );
   }
